@@ -33,7 +33,9 @@ class TestExpression(TestCase):
 
     def test_propagate_uncertainty(self):
         # TODO Make sure that this raises exception of the proper types that will be applicable to the caller
-        pass
+        test_expr = Expression("x**2")
+        result = test_expr.propagate_uncertainty([("x", 4.0, 0.05)])
+        print(result)
 
 
 class Test(TestCase):

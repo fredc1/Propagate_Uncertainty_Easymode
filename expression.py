@@ -1,4 +1,3 @@
-
 from uncertainties.umath import *
 from uncertainties import ufloat_fromstr
 
@@ -59,7 +58,19 @@ class Expression:
 
     def propagate_uncertainty(self, values) -> tuple:
         """Returns the value of the expression with uncertainty."""
-        # x = ufloat_fromstr("0.20+/-0.01")
-        # x = ufloat(1, 0.1)
+        result = None;
+        assignment = "{var_name} = ufloat_fromstr({val_unc})\n"
+        command_list = []
 
-        pass
+        for val in values:
+            val_unc_str = f"\"{val[1]}+/-{val[2]}\""
+            command_list.append(assignment.format(var_name=val[0], val_unc=val_unc_str))
+
+        command_list.append(f"result = {self.expr_str}\n")
+        command = "".join(command_list)
+        _locals = locals()
+        exec(command, globals(), _locals)
+
+        return _locals["result"].__repr__()
+
+
